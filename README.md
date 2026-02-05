@@ -22,8 +22,6 @@
 npm ci
 ```
 
-````
-
 > 처음 세팅/패키지 변경 후에는 `npm ci` 또는 `npm install`을 사용합니다.
 
 ### 2) Environment variables
@@ -217,4 +215,7 @@ docker ps
 원격 레포:
 
 - [https://github.com/YoungGilMad/new_backend.git](https://github.com/YoungGilMad/new_backend.git)
-````
+
+```
+
+```
