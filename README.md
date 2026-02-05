@@ -1,98 +1,220 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# new_backend (NestJS Backend)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+모바일 앱 백엔드(NestJS) 프로젝트입니다.  
+로컬 개발 환경에서 **Docker(PostgreSQL)** 를 표준으로 사용합니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 0. Requirements
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- macOS (Apple Silicon 포함)
+- Node.js (권장: LTS, 예: 20.x)
+- Docker Desktop
+- VS Code (권장)
 
-## Project setup
+---
+
+## 1. Project Setup
+
+### 1) Install dependencies
 
 ```bash
-$ npm install
+npm ci
 ```
 
-## Compile and run the project
+````
+
+> 처음 세팅/패키지 변경 후에는 `npm ci` 또는 `npm install`을 사용합니다.
+
+### 2) Environment variables
+
+환경변수 파일은 **커밋하지 않습니다**.
+
+- `.env.example` : 커밋 O (템플릿)
+- `.env` : 커밋 X (로컬용)
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
+---
+
+## 2. Database (PostgreSQL via Docker Compose)
+
+이 프로젝트는 로컬 DB를 Docker로 실행합니다.
+
+### 1) Start DB
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run db:up
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+또는 직접:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+실행 확인:
 
-## Resources
+```bash
+docker ps
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+예시로 `backend_postgres` 컨테이너가 `Up` 상태면 정상입니다.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 2) View DB logs (중요)
 
-## Support
+로그 확인은 아래 중 하나로 합니다.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+✅ 권장 (npm 스크립트):
 
-## Stay in touch
+```bash
+npm run db:logs
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+✅ 직접 실행:
 
-## License
+```bash
+docker compose logs -f postgres
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+✅ 컨테이너 이름으로:
+
+```bash
+docker logs -f backend_postgres
+```
+
+> ❌ 주의: `docker run db:logs` 는 "이미지 실행" 명령이라서 로그 확인용이 아닙니다.
+> `docker run db:logs`를 입력하면 `db:logs`라는 이미지를 찾으려다 오류가 납니다.
+
+### 3) Stop DB
+
+```bash
+npm run db:down
+```
+
+또는:
+
+```bash
+docker compose down
+```
+
+### 4) Connect to Postgres (optional)
+
+로컬에 psql이 없어도 컨테이너 내부에서 접속할 수 있습니다.
+
+```bash
+docker exec -it backend_postgres psql -U postgres -d app
+```
+
+접속 후 테스트:
+
+```sql
+SELECT 1;
+\q
+```
+
+---
+
+## 3. Run Server
+
+개발 모드 실행:
+
+```bash
+npm run start:dev
+```
+
+기본 포트는 `.env`의 `PORT` 값을 따릅니다(예: 3000).
+
+---
+
+## 4. Prisma (DB Schema / Migration)
+
+> Prisma는 DB 스키마/마이그레이션 기반으로 개발하기 위한 도구입니다.
+
+### 1) Install & init (최초 1회)
+
+```bash
+npm i prisma @prisma/client
+npx prisma init
+```
+
+### 2) DB 연결 확인
+
+DB가 실행 중인 상태에서:
+
+```bash
+npx prisma db push
+```
+
+에러 없이 종료되면 `DATABASE_URL` 연결이 정상입니다.
+
+---
+
+## 5. Recommended VS Code Setup
+
+권장 확장:
+
+- ESLint
+- Prettier
+
+권장 설정(`.vscode/settings.json`) 예시는 레포에 포함합니다(있는 경우).
+
+---
+
+## 6. Scripts
+
+자주 쓰는 명령어:
+
+```bash
+npm run start:dev     # dev server
+npm run build         # build
+npm run test          # unit tests
+npm run lint          # lint
+
+npm run db:up         # start postgres via docker compose
+npm run db:down       # stop postgres
+npm run db:logs       # follow postgres logs
+```
+
+---
+
+## 7. Troubleshooting
+
+### Q1. `docker run db:logs` 를 쳤더니 "pull access denied"가 나옵니다.
+
+- `docker run`은 이미지를 실행하는 명령입니다. 로그 확인이 목적이면 아래 중 하나를 사용하세요:
+
+```bash
+npm run db:logs
+# 또는
+docker compose logs -f postgres
+# 또는
+docker logs -f backend_postgres
+```
+
+### Q2. DB 포트(5432)가 이미 사용 중이라고 나옵니다.
+
+- 다른 Postgres가 이미 실행 중일 수 있습니다.
+- 사용 중인 프로세스를 종료하거나, `docker-compose.yml`에서 포트를 변경하세요.
+
+### Q3. `npx prisma db push`가 실패합니다.
+
+- 우선 DB 컨테이너가 실행 중인지 확인:
+
+```bash
+docker ps
+```
+
+- `.env`의 `DATABASE_URL`이 올바른지 확인:
+  - 예: `postgresql://postgres:postgres@localhost:5432/app?schema=public`
+
+---
+
+## 8. Remote Repository
+
+원격 레포:
+
+- [https://github.com/YoungGilMad/new_backend.git](https://github.com/YoungGilMad/new_backend.git)
+````
